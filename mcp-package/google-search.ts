@@ -9,8 +9,10 @@ const server = new McpServer({
 
 const transport = new StdioServerTransport();
 
-const GOOGLE_API_KEY="AIzaSyBLZaPODUbER5qOc8tJSotyrlPRlD3_Crk"
-const GOOGLE_CSE_ID="1492cf97e66534931"
+// 谷歌搜索API密钥
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || ''
+// 谷歌搜索搜索引擎ID
+const GOOGLE_CSE_ID = process.env.GOOGLE_CSE_ID || ''
 
 // 错误类
 class GoogleSearchError extends Error {
