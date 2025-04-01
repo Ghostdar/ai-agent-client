@@ -2,7 +2,7 @@ import type { RequestHandler } from 'express'
 import config from '../../config'
 import { generateUniqueKey } from '../../utils/uniqueKey'
 import { MCPClient } from './anthropic-model';
-import path from 'node:path';
+import mcpConfig from '../../../mcp.config.json';
 
 
 const anthropicSessionMap = new Map<string, MCPClient>();
@@ -18,7 +18,6 @@ export const newAnthropicSession: RequestHandler = (_req, res) => {
     }
     const sessionId = generateUniqueKey(); 
     anthropicSessionMap.set(sessionId, new MCPClient());
-    console.log(anthropicSessionMap)
 
     res.status(200).json({
         chatId: sessionId,
@@ -47,8 +46,12 @@ export const sendMessage: RequestHandler = async (_req, res) => {
     }
 
     try {
-        const serverPath = path.resolve(process.cwd(), 'dist/mcp-package/google-search.js');
-        await client.connectToServer(serverPath);
+        // 将 mcpConfig.mcpServers 对象中的所有服务器配置转换为数组，并添加键作为name属性
+        const mcpServers = Object.entries(mcpConfig.mcpServers).map(([key, config]) => ({
+            ...config,
+            name: key
+        }));
+        await client.connectToServerByConfigs(mcpServers);
         const response = await client.processQuery(message as string);
         console.log(response)
         res.status(200).json({
