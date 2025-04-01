@@ -14,7 +14,7 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourusername/ai-agent-client.git
+git clone https://github.com/Ghostdar/ai-agent-client.git
 cd ai-agent-client
 
 # 安装依赖
